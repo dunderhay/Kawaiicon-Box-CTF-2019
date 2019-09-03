@@ -1,29 +1,33 @@
 import RPi.GPIO as GPIO
 import os
+import signal
 from flask import Flask, render_template, redirect, url_for, request, session, abort, url_for
 
 app = Flask(__name__)
 
-GPIO.setwarnings(False)
+redPin   = 37
+servoPin = 11
 GPIO.setmode(GPIO.BOARD)
+GPIO.setup(redPin, GPIO.OUT)
+GPIO.setup(servoPin, GPIO.OUT)
+servo = GPIO.PWM(servoPin, 50)
+servo.start(0)
 
-# Create dictionary called pins to store pin number, name and pin state
+def end(signal,frame):
+    print ("\n[*] Cleaning up...\nBye!")
+    servo.stop()
+    GPIO.cleanup()
+    exit(1)
+
+signal.signal(signal.SIGINT, end)
+
 pins = {
-        23 : {'name' : 'GPIO 23', 'state' : GPIO.LOW}
+        37 : {'name' : 'GPIO 37', 'state' : GPIO.LOW}
 }
 
 spins = {
-        24 : {'name' : 'GPIO 24', 'state' : GPIO.LOW}
+        11 : {'name' : 'GPIO 11', 'state' : servo.ChangeDutyCycle(12)}
 }
-
-# Set each pin as an output and make it low
-for pin in pins:
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.LOW)
-
-for spin in spins:
-    GPIO.setup(spin, GPIO.OUT)
-    GPIO.output(spin, GPIO.LOW)
 
 ## Routing
 # Route for handling index page
@@ -73,10 +77,14 @@ def action(changePin, action):
         return redirect(url_for('login'))
     else:
         changePin = int(changePin)
-        if action == "on":
-            GPIO.output(changePin, GPIO.HIGH)
-        if action == "off":
-            GPIO.output(changePin, GPIO.LOW)
+        if changePin == 37 and action == "on":
+            GPIO.output(redPin, GPIO.HIGH)
+        elif changePin == 11 and action == "on":
+            servo.ChangeDutyCycle(5)
+        elif changePin == 37 and action == "off":
+            GPIO.output(redPin, GPIO.LOW)
+        elif changePin == 11 and action == "off":
+            servo.ChangeDutyCycle(12)
         for spin in spins:
             spins[spin]['state'] = GPIO.input(spin)
         for pin in pins:
