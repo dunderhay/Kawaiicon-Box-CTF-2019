@@ -1,4 +1,4 @@
-# RPi Web App Challenge
+# Web App Challenge
 
 Raspberry Pi running a flask web-server. Used to control a servo that can unlock one of the doors to a level.
 
@@ -26,9 +26,24 @@ ExecStart=/usr/bin/python /home/pi/web-server/open.py
 WantedBy=multi-user.target
 ```
 
+The RPi will broadcast a WiFi AP for participants to connect to. We need WiFi at boot so the `wpa_supplicant.conf` should have:
+
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+network={
+    ssid="📦"
+    psk="oops"
+    key_mgmt=WPA-PSK
+}
+```
+
 ## Challenges
 ### Challenge \#1
 A login page with weak admin credentials. Participants should be able to guess the credentials to gain access to the admin page, which allows the attacker to unlock a door via the GPIO pins on the RPi.
 
 ### Challenge \#2
 Participants will be able to interact with GPIO pins on the RPi once authenticated to the website. An IDOR vulnerability exists within the function that controls GPIO pins.
+
+### Challenge \#3
+Cracking WPA2 for those who do not pick lock:
+https://null-byte.wonderhowto.com/how-to/hack-wi-fi-cracking-wpa2-passwords-using-new-pmkid-hashcat-attack-0189379/
