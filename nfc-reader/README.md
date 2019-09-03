@@ -1,5 +1,7 @@
 # NFC Reader Challenge
 
+Raspberry Pi connected to RF522 NFC reader. Used to control a servo that can unlock a door.
+
 ## Setup
 `python3 -m venv ./nf-venv`
 
