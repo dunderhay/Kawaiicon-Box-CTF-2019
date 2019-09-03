@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+           <title>Super Secret Web Server</title>
+           <link rel="stylesheet" href="/static/style.css" type="text/css">
+           <link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css">
+           <script src="/static/bootstrap.min.js"></script>
+</head>
+
+<body>
+        <div class="topnav">
+                <a>Admin Panel</a>
+                <div class="topnav-right">
+                        <a href="/logout">Logout</a>
+                </div>
+        </div>
+        <br>
+        <p>Well done!</p>
+        <p>This admin panel is password protected. However, the admin is using a weak password and you guessed it.</p>
+        <br>
+        <p>Authentication credentials, such as passwords, are used by information systems to establish confidence in the identity of a system user. Maintaining the confidentiality of these authentication credentials is essential to maintaining the integrity of the authentication process for information systems.</p>
+        <p>Password complexity policies dictate the requirements that a user’s password must meet to use a password within the system. An attacker who knows a valid username can gain unauthorised access by guessing a password. Users often choose a weak password, as they are easier to remember.</p>
+        <br>
+        <p>You can control the the outer door using the switch below:</p>
+        {% for pin in pins %}
+        <h2>{% if pins[pin].state == true %} The door is currently: <strong>unlocked</strong></h2>
+        <div class="row">
+                <div class="col-md-2">
+                        <a href="/{{pin}}/off" class="btn btn-block btn-lg btn-default" role="button">Lock</a>
+                </div>
+        </div>
+        <h2>{% else %} The door is currently: <strong>locked</strong></h2>
+        <div class="row">
+                <div class="col-md-2">
+                        <a href="/{{pin}}/on" class="btn btn-block btn-lg btn-primary" role="button">Unlock</a>
+                </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+</body>
+</html>
