@@ -1,32 +1,28 @@
-import RPi.GPIO as GPIO
+import pigpio
 import os
 import signal
 from flask import Flask, render_template, redirect, url_for, request, session, abort, url_for
 
 app = Flask(__name__)
 
-redPin   = 37
-servoPin = 11
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(redPin, GPIO.OUT)
-GPIO.setup(servoPin, GPIO.OUT)
-servo = GPIO.PWM(servoPin, 50)
-servo.start(0)
+redPin   = 26
+servoPin = 17
+pi = pigpio.pi()
 
 def end(signal,frame):
     print ("\n[*] Cleaning up...\nBye!")
-    servo.stop()
-    GPIO.cleanup()
+    pi.write(redPin, 0)
+    pi.set_servo_pulsewidth(servoPin, 2500)
     exit(1)
 
 signal.signal(signal.SIGINT, end)
 
 pins = {
-        37 : {'name' : 'GPIO 37', 'state' : GPIO.LOW}
+        redPin : {'name' : 'redPin', 'state' : pi.write(redPin, 0)}
 }
 
 spins = {
-        11 : {'name' : 'GPIO 11', 'state' : servo.ChangeDutyCycle(12)}
+        servoPin : {'name' : 'servoPin', 'state' : pi.set_servo_pulsewidth(servoPin, 2500)}
 }
 
 ## Routing
@@ -45,7 +41,7 @@ def home():
         return render_template('login.html')
     else:
         for pin in pins:
-            pins[pin]['state'] = GPIO.input(pin)
+            pins[pin]['state'] = pi.read(pin)
         templateData = {
             'pins' : pins
         }
@@ -77,18 +73,18 @@ def action(changePin, action):
         return redirect(url_for('login'))
     else:
         changePin = int(changePin)
-        if changePin == 37 and action == "on":
-            GPIO.output(redPin, GPIO.HIGH)
-        elif changePin == 11 and action == "on":
-            servo.ChangeDutyCycle(5)
-        elif changePin == 37 and action == "off":
-            GPIO.output(redPin, GPIO.LOW)
-        elif changePin == 11 and action == "off":
-            servo.ChangeDutyCycle(12)
+        if changePin == 26 and action == "on":
+            pi.write(redPin, 1)
+        elif changePin == 17 and action == "on":
+            pi.set_servo_pulsewidth(servoPin, 1000)
+        elif changePin == 26 and action == "off":
+            pi.write(redPin, 0)
+        elif changePin == 17 and action == "off":
+            pi.set_servo_pulsewidth(servoPin, 2500)
         for spin in spins:
-            spins[spin]['state'] = GPIO.input(spin)
+            spins[spin]['state'] = pi.read(spin)
         for pin in pins:
-            pins[pin]['state'] = GPIO.input(pin)
+            pins[pin]['state'] = pi.read(pin)
         templateData = {
             'pins' : pins
         }

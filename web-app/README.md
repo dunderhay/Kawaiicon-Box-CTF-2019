@@ -4,8 +4,14 @@ Raspberry Pi running a flask web-server. Used to control a servo that can unlock
 
 ## Running the webserver
 
-The web-server can be run using the following command:
-`python open.py`
+_requires pigpio_
+
+Install it: `sudo apt install pigpio`
+
+Start dameon with: `pigpiod`
+
+The web-server can be run using the following command: `python open.py`
+
 
 However, the RPi is configured to start the web-server as the following system service:
 
