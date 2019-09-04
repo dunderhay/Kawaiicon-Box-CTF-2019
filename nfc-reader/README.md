@@ -3,6 +3,15 @@
 Raspberry Pi connected to RF522 NFC reader. Used to control a servo that can unlock a door.
 
 ## Setup
+
+_requires pigpio_
+
+Install it: `sudo apt install pigpio`
+
+Start dameon with: `sudo pigpiod`
+
+## Running the reader
+
 `python3 -m venv ./nf-venv`
 
 `pip install -r requirements.txt`

@@ -8,7 +8,7 @@ _requires pigpio_
 
 Install it: `sudo apt install pigpio`
 
-Start dameon with: `pigpiod`
+Start dameon with: `sudo pigpiod`
 
 The web-server can be run using the following command: `python open.py`
 
