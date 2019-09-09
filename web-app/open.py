@@ -1,23 +1,17 @@
 import RPi.GPIO as GPIO
-import pigpio
-import os
-import signal
-import time
-import sqlite3
-import hashlib
+import pigpio, os, signal, time, sqlite3, hashlib, pygame
 from flask import Flask, render_template, redirect, url_for, request, session, abort, url_for
 
 app = Flask(__name__)
 
 redPin   = 26
-buzzerPin = 22
 servoPin = 17
 pi = pigpio.pi()
+pygame.mixer.init()
 
 def end(signal,frame):
     print ('\n[*] Cleaning up...\nBye!')
     pi.write(redPin, 0)
-    pi.write(buzzerPin, 0)
     pi.set_servo_pulsewidth(servoPin, 2500)
     GPIO.cleanup()
     exit(1)
@@ -26,17 +20,16 @@ signal.signal(signal.SIGINT, end)
 
 pi.set_servo_pulsewidth(servoPin, 2500)
 pi.write(redPin, 0)
-pi.write(buzzerPin, 0)
 
 def triggerLights():
     pi.write(redPin, 1)
     time.sleep(6)
     pi.write(redPin, 0)
 
-def triggerBuzzer():
-    pi.write(buzzerPin, 1)
-    time.sleep(3)
-    pi.write(buzzerPin, 0)
+def triggerRick():
+    pygame.mixer.music.load("static/rick.wav")
+    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.play()
 
 def triggerDoor():
     pi.set_servo_pulsewidth(servoPin, 1000)
@@ -99,7 +92,7 @@ def action(changePin):
         if changePin == 1:
             triggerLights()
         elif changePin == 2:
-            triggerBuzzer()
+            triggerRick()
         elif changePin == 3:
             triggerDoor()
         return render_template('home.html')

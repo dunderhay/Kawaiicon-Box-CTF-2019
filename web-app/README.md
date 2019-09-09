@@ -4,15 +4,7 @@ Raspberry Pi running a flask web-server. Used to control a servo that can unlock
 
 ## Running the webserver
 
-_requires pigpio_
-
-Install it: `sudo apt install pigpio`
-
-Start dameon with: `sudo pigpiod`
-
-
 The web-server can be run using the following command: `python open.py`
-
 
 However, the RPi is configured to start the web-server as the following system service:
 
@@ -33,21 +25,41 @@ ExecStart=/usr/bin/python /home/pi/web-server/open.py
 WantedBy=multi-user.target
 ```
 
+## Setting up raspberry pi
+
+_requires pigpio and pygames_
+
+Install it: `sudo apt install pigpio`
+
+Start dameon with: `sudo pigpiod`
+
+`sudo apt-get install python-pygame`
+
+
 ## Firewall config
+
 Open ssh for management
 Open web admin port 8080
+
 `ufw disallow`
+
 `ufw enable ssh`
+
 ...
 
 
 ## Database Config
+
 `sudo apt install sqlite3`
 
-Create database and insert admin
+Create database in `/static/` dir and insert admin
+
 `sqlite3 user.db`
+
 `CREATE TABLE USERS(USERNAME TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL);`
+
 `INSERT INTO USERS (USERNAME, PASSWORD) VALUES ('admin', '3109ae030933b596b162e4717fc65bae94e11112109ba8b0d2990ed6fca941a2');`
+
 (admin:matryoshka)
 
 

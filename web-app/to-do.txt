@@ -1,9 +1,1 @@
 add led strip for object 1
-add buzzer for object 2 -> or use an audio speaker and pygames to output sound
-
-import pygame
-pygame.mixer.init()
-pygame.mixer.music.load("myFile.wav")
-pygame.mixer.music.play()
-while pygame.mixer.music.get_busy() == True:
-    continue
