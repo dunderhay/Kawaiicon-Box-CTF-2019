@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <head>
-        <link rel="stylesheet" href="/static/style.css" type="text/css">
-        <link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css">
-        <script src="/static/bootstrap.min.js"></script>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css">
+    <script src="/static/bootstrap.min.js"></script>
 </head>
 
 <body>
-        {% block body %}
-        {% if session['logged_in'] %}
-        <p>You're logged in already!</p>
-        {% else %}
-        <form action="/login" method="POST">
-                <div class="login">
-                        <div class="login-screen">
-                                <div class="app-title">
-                                        <h1>Login</h1>
-                                </div>
-                                <div class="login-form">
-                                        <div class="control-group">
-                                                <input type="text" class="login-field" value="admin" placeholder="Username" name="username" required>
-                                                <label class="login-field-icon fui-user" for="login-name"></label>
-                                        </div>
-                                        <div class="control-group">
-                                                <input type="password" class="login-field" value="" placeholder="Password" name="password" required>
-                                                <label class="login-field-icon fui-lock" for="login-pass"></label>
-                                        </div>
-                                        <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" >
-                                        <br>
-                                        {% if error %}
-                                                <p class="error"><strong>Error:</strong> {{ error }}
-                                        {% endif %}
-                                </div>
-                        </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Admin Login</h5>
+                        <form class="form-signin" action="/login" method="POST">
+                            <div class="form-label-group">
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="form-label-group">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                <label for="password">Password</label>
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Login</button>
+                            <br>
+                            {% if error %}
+                            <div class="alert alert-danger alert-dismissible" role="alert">{{ error }}</div>
+                            {% endif %}
+                        </form>
+                    </div>
                 </div>
-        </form>
-        {% endif %}
-        {% endblock %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -10,6 +10,7 @@ Install it: `sudo apt install pigpio`
 
 Start dameon with: `sudo pigpiod`
 
+
 The web-server can be run using the following command: `python open.py`
 
 
@@ -31,6 +32,11 @@ ExecStart=/usr/bin/python /home/pi/web-server/open.py
 [Install]
 WantedBy=multi-user.target
 ```
+
+## Firewall config
+Open ssh for management
+Open web admin port 8080
+
 
 The RPi will broadcast a WiFi AP for participants to connect to. We need WiFi at boot so the `wpa_supplicant.conf` should have:
 

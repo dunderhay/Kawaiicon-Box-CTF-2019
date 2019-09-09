@@ -1,115 +1,116 @@
-/* Login page Styles */
-* {
-box-sizing: border-box;
+:root {
+  --input-padding-x: 1.5rem;
+  --input-padding-y: .75rem;
 }
 
-*:focus {
-        outline: none;
-}
-body {
-font-family: Arial;
-padding: 50px;
-}
-.login {
-margin: 20px auto;
-width: 300px;
-}
-.login-screen {
-background-color: #FFF;
-padding: 20px;
-border-radius: 5px
+.card-signin {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
-.app-title {
-text-align: center;
-color: #777;
+.card-signin .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
 }
 
-.login-form {
-text-align: center;
-}
-.control-group {
-margin-bottom: 10px;
+.card-signin .card-body {
+  padding: 2rem;
 }
 
-input {
-text-align: center;
-background-color: #ECF0F1;
-border: 2px solid transparent;
-border-radius: 3px;
-font-size: 16px;
-font-weight: 200;
-padding: 10px 0;
-width: 250px;
-transition: border .5s;
+.form-signin {
+  width: 100%;
 }
 
-input:focus {
-border: 2px solid #3498DB;
-box-shadow: none;
+.form-signin .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
 }
 
-.btn {
-  border: 2px solid transparent;
-  background: #3498DB;
-  color: #ffffff;
-  font-size: 16px;
-  line-height: 25px;
-  padding: 10px 0;
-  text-decoration: none;
-  text-shadow: none;
-  border-radius: 3px;
-  box-shadow: none;
-  transition: 0.25s;
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-label-group input {
+  height: auto;
+  border-radius: 2rem;
+}
+
+.form-label-group>input,
+.form-label-group>label {
+  padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+.form-label-group>label {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
-  width: 250px;
-  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 0;
+  /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out;
 }
 
-.btn:hover {
-  background-color: #2980B9;
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
 }
 
-.login-link {
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+  padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown)~label {
+  padding-top: calc(var(--input-padding-y) / 3);
+  padding-bottom: calc(var(--input-padding-y) / 3);
   font-size: 12px;
-  color: #444;
-  display: block;
-        margin-top: 12px;
+  color: #777;
 }
 
-
-/* Home page Styles */
-
-/* Add a black background color to the top navigation */
-.topnav {
-        background-color: #333;
-        color: #FFF;
-        overflow: hidden;
+.navbar-darkgrey {
+    color: #FFFFFF;
+    background-color: #2C2C2C;
 }
 
-/* Style the links inside the navigation bar */
-.topnav a {
-        float: left;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
+* {
+  box-sizing: border-box;
 }
 
-/* Change the color of links on hover */
-.topnav-right a:hover {
-        background-color: #ddd;
-        color: black;
+.col-img-btn {
+  float: left;
+  width: 50.00%;
+  padding: 5px;
 }
 
-/* Add a color to the active/current link */
-.topnav-right a.active {
-        background-color: #4CAF50;
-        color: white;
-}
-
-/* Right-aligned section inside the top navigation */
-.topnav-right {
-        float: right;
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
 }

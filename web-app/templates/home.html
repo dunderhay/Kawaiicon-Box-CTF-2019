@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <head>
-           <title>Super Secret Web Server</title>
-           <link rel="stylesheet" href="/static/style.css" type="text/css">
-           <link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css">
-           <script src="/static/bootstrap.min.js"></script>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css">
+    <script src="/static/bootstrap.min.js"></script>
 </head>
 
-<body>
-        <div class="topnav">
-                <a>Admin Panel</a>
-                <div class="topnav-right">
-                        <a href="/logout">Logout</a>
-                </div>
+<nav class="navbar navbar-expand-lg navbar-darkgrey">
+    <div class="container">
+        <div class="navbar-header">
+            <h1 style="color:#DE4A5B; padding-top:15px; padding-bottom:5px">Admin Portal</h1>
         </div>
-        <br>
-        <p>Well done!</p>
-        <br>
-        <p>This admin panel is password protected. However, the admin is using a weak password and you guessed it.</p>
-        <p>Authentication credentials, such as passwords, are used by information systems to establish confidence in the identity of a system user. Maintaining the confidentiality of these authentication credentials is essential to maintaining the integrity of the authentication process for information systems.</p>
-        <p>Password complexity policies dictate the requirements that a user’s password must meet to use a password within the system. An attacker who knows a valid username can gain unauthorised access by guessing a password. Users often choose a weak password, as they are easier to remember.</p>
-        <br>
-        <p>You can control the the light using the switch below:</p>
-        {% for pin in pins %}
-        <h2>{% if pins[pin].state == true %} The light is currently: <strong>On</strong></h2>
-        <div class="row">
-                <div class="col-md-2">
-                        <a href="/{{pin}}/off" class="btn btn-block btn-lg btn-default" role="button">Turn Off</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <br>
+            <h1>(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧</h1>
+            <h2>Welcome to the Administrator Portal!</h2>
+            <br>
+            <p>The buttons bellow allow you to control the box:</p>
+            <div class="row">
+                <div class="col-img-btn">
+                    <a href="/trigger/1/on"><img style="padding:20px" border="0" align="right" alt="lights" src="/static/light-button.png"></a>
                 </div>
-        </div>
-        <h2>{% else %} The light is currently: <strong>Off</strong></h2>
-        <div class="row">
-                <div class="col-md-2">
-                        <a href="/{{pin}}/on" class="btn btn-block btn-lg btn-primary" role="button">Turn On</a>
+                <div class="col-img-btn">
+                    <a href="/trigger/2/on"><img style="padding:20px" border="0" align="left" alt="music" src="/static/play-button.png"></a>
                 </div>
+            </div>
         </div>
-        {% endif %}
-        {% endfor %}
-</body>
+    </div>
+</div>
 </html>

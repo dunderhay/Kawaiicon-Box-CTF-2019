@@ -15,8 +15,7 @@ Learn how to pick a lock.
 
 ## Card Cloning
 
-Learn how to read and write data to a Mifare Classic 1k card using [this awesome free app](https://play.google.com/store/apps/details?id=de.syss.MifareClassicTool).
-
+Learn how to read and write Mifare Classic 1k card data using [this awesome free app](https://play.google.com/store/apps/details?id=de.syss.MifareClassicTool) from Gerhard Klostermeier ([ikarus23](https://github.com/ikarus23)). To save card data to the phone and write saved card dumps from your device, the app requires permission to access data on your phone - just as any other app that wants to read/write data from/to your device. The app is [open-source and on Github](https://github.com/ikarus23/MifareClassicTool) if you wish to review the code before installing the app.
 
 | Skills | Tools Required? | Tools Provided? | Solo or Team |
 | ------------- | ------------- | ----- | ----- |
