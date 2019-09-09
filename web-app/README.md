@@ -36,7 +36,22 @@ WantedBy=multi-user.target
 ## Firewall config
 Open ssh for management
 Open web admin port 8080
+`ufw disallow`
+`ufw enable ssh`
+...
 
+
+## Database Config
+`sudo apt install sqlite3`
+
+Create database and insert admin
+`sqlite3 user.db`
+`CREATE TABLE USERS(USERNAME TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL);`
+`INSERT INTO USERS (USERNAME, PASSWORD) VALUES ('admin', '3109ae030933b596b162e4717fc65bae94e11112109ba8b0d2990ed6fca941a2');`
+(admin:matryoshka)
+
+
+## Wifi Config
 
 The RPi will broadcast a WiFi AP for participants to connect to. We need WiFi at boot so the `wpa_supplicant.conf` should have:
 

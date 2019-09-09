@@ -3,6 +3,8 @@ import pigpio
 import os
 import signal
 import time
+import sqlite3
+import hashlib
 from flask import Flask, render_template, redirect, url_for, request, session, abort, url_for
 
 app = Flask(__name__)
@@ -13,7 +15,7 @@ servoPin = 17
 pi = pigpio.pi()
 
 def end(signal,frame):
-    print ("\n[*] Cleaning up...\nBye!")
+    print ('\n[*] Cleaning up...\nBye!')
     pi.write(redPin, 0)
     pi.write(buzzerPin, 0)
     pi.set_servo_pulsewidth(servoPin, 2500)
@@ -41,9 +43,12 @@ def triggerDoor():
     time.sleep(6)
     pi.set_servo_pulsewidth(servoPin, 2500)
 
+def hash_pass(password):
+	return hashlib.sha256(password.encode()).hexdigest()
+
 ## Routing
 # Route for handling index page
-@app.route("/")
+@app.route('/')
 def index():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
@@ -51,7 +56,7 @@ def index():
         return render_template('home.html')
 
 # Route for handling home page
-@app.route("/home")
+@app.route('/home')
 def home():
     if not session.get('logged_in'):
         return render_template('login.html')
@@ -66,22 +71,26 @@ def login():
         return redirect(url_for('home'))
     else:
         if request.method == 'POST':
-            if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-                error = 'Invalid Credentials!'
-            else:
-                session['logged_in'] = True
-                return redirect(url_for('home'))
+            username, password = (request.form['username'], request.form['password'])
+            con = sqlite3.connect('static/user.db')
+            with con:
+                cur = con.cursor()
+                cur.execute('SELECT * FROM users WHERE username = \"%s\" AND password = \"%s\"' % (username, hash_pass(password)))
+                if cur.fetchone():
+                    session['logged_in'] = True
+                    return redirect(url_for('home'))
+                else:
+                    error = 'Invalid Credentials!'
         return render_template('login.html', error=error)
 
 # Route for handling the logout page logic
-@app.route("/logout")
+@app.route('/logout')
 def logout():
     session['logged_in'] = False
     return redirect(url_for('login'))
 
 # Route for handling GPIO / setting pins on and off
-# Missing auth check as one of the bugs, failure to call `if not session.get('logged_in')`
-@app.route("/trigger/<changePin>/on")
+@app.route('/trigger/<changePin>/on')
 def action(changePin):
     if not session.get('logged_in'):
         return redirect(url_for('login'))
@@ -96,6 +105,6 @@ def action(changePin):
         return render_template('home.html')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.secret_key = os.urandom(12)
     app.run(host='0.0.0.0', port=8080, debug=False)
