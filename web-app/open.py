@@ -4,6 +4,7 @@ import pigpio, os, signal, time, sqlite3, hashlib, pygame
 from flask import Flask, render_template, redirect, url_for, request, session, abort, url_for
 
 app = Flask(__name__)
+dir = os.path.dirname(__file__)
 
 redPin   = 26
 servoPin = 17
@@ -27,17 +28,17 @@ def end(signal,frame):
 signal.signal(signal.SIGINT, end)
 
 def bgmusic():
-    pygame.mixer.music.load('static/bg.wav')
+    pygame.mixer.music.load(os.path.join(dir, 'static/bg.wav'))
     pygame.mixer.music.play(-1)
 
 def wow():
     pygame.mixer.music.stop()
-    pygame.mixer.music.load("static/wow.wav")
+    pygame.mixer.music.load(os.path.join(dir, 'static/wow.wav'))
     pygame.mixer.music.play()
 
 def openmusic():
     pygame.mixer.music.stop()
-    pygame.mixer.music.load("static/open.wav")
+    pygame.mixer.music.load(os.path.join(dir, 'static/open.wav'))
     pygame.mixer.music.play()
 
 def triggerLights():
@@ -47,7 +48,7 @@ def triggerLights():
 
 def triggerRick():
     pygame.mixer.music.stop()
-    pygame.mixer.music.load("static/rick.wav")
+    pygame.mixer.music.load(os.path.join(dir, 'static/rick.wav'))
     pygame.mixer.music.play()
 
 def triggerDoor():
@@ -87,7 +88,7 @@ def login():
         if request.method == 'POST':
             username, password = (request.form['username'], request.form['password'])
             try:
-                con = sqlite3.connect('static/user.db')
+                con = sqlite3.connect(os.path.join(dir, 'static/user.db'))
                 with con:
                     cur = con.cursor()
                     cur.execute('SELECT * FROM users WHERE username = \"%s\" AND password = \"%s\"' % (username, hash_pass(password)))

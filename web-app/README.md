@@ -14,12 +14,13 @@ Content:
 
 ```
 [Unit]
-Description=Web Server Opener
+Description=Starts the web application
 After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /home/pi/web-server/open.py
+User=pi
+ExecStart=/usr/bin/python /home/pi/web-app/open.py
 
 [Install]
 WantedBy=multi-user.target
