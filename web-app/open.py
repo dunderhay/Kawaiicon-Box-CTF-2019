@@ -1,3 +1,4 @@
+
 import RPi.GPIO as GPIO
 import pigpio, os, signal, time, sqlite3, hashlib, pygame
 from flask import Flask, render_template, redirect, url_for, request, session, abort, url_for
@@ -8,18 +9,31 @@ redPin   = 26
 servoPin = 17
 pi = pigpio.pi()
 pygame.mixer.init()
+pygame.mixer.music.set_volume(1)
+
+def setup():
+    pi.set_servo_pulsewidth(servoPin, 2500)
+    pi.write(redPin, 0)
+    bgmusic()
 
 def end(signal,frame):
     print ('\n[*] Cleaning up...\nBye!')
     pi.write(redPin, 0)
     pi.set_servo_pulsewidth(servoPin, 2500)
+    pygame.mixer.music.stop()
     GPIO.cleanup()
     exit(1)
 
 signal.signal(signal.SIGINT, end)
 
-pi.set_servo_pulsewidth(servoPin, 2500)
-pi.write(redPin, 0)
+def bgmusic():
+    pygame.mixer.music.load('static/bg.wav')
+    pygame.mixer.music.play(-1)
+
+def wow():
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load("static/wow.wav")
+    pygame.mixer.music.play()
 
 def triggerLights():
     pi.write(redPin, 1)
@@ -27,8 +41,8 @@ def triggerLights():
     pi.write(redPin, 0)
 
 def triggerRick():
+    pygame.mixer.music.stop()
     pygame.mixer.music.load("static/rick.wav")
-    pygame.mixer.music.set_volume(1)
     pygame.mixer.music.play()
 
 def triggerDoor():
@@ -37,7 +51,9 @@ def triggerDoor():
     pi.set_servo_pulsewidth(servoPin, 2500)
 
 def hash_pass(password):
-	return hashlib.sha256(password.encode()).hexdigest()
+        return hashlib.sha256(password.encode()).hexdigest()
+
+setup()
 
 ## Routing
 # Route for handling index page
@@ -65,15 +81,26 @@ def login():
     else:
         if request.method == 'POST':
             username, password = (request.form['username'], request.form['password'])
-            con = sqlite3.connect('static/user.db')
-            with con:
-                cur = con.cursor()
-                cur.execute('SELECT * FROM users WHERE username = \"%s\" AND password = \"%s\"' % (username, hash_pass(password)))
-                if cur.fetchone():
-                    session['logged_in'] = True
-                    return redirect(url_for('home'))
-                else:
-                    error = 'Invalid Credentials!'
+            try:
+                con = sqlite3.connect('static/user.db')
+                with con:
+                    cur = con.cursor()
+                    cur.execute('SELECT * FROM users WHERE username = \"%s\" AND password = \"%s\"' % (username, hash_pass(password)))
+                    if cur.fetchone():
+                        wow()
+                        time.sleep(2)
+                        bgmusic()
+                        session['logged_in'] = True
+                        return redirect(url_for('home'))
+                    else:
+                        error = 'Invalid Credentials'
+            except sqlite3.Error as e:
+                error = e
+            except Exception as e:
+                error = e
+            finally:
+                if con:
+                    con.close()
         return render_template('login.html', error=error)
 
 # Route for handling the logout page logic
@@ -93,6 +120,8 @@ def action(changePin):
             triggerLights()
         elif changePin == 2:
             triggerRick()
+            time.sleep(4)
+            bgmusic()
         elif changePin == 3:
             triggerDoor()
         return render_template('home.html')

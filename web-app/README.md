@@ -33,19 +33,26 @@ Install it: `sudo apt install pigpio`
 
 Start dameon with: `sudo pigpiod`
 
-`sudo apt-get install python-pygame`
+`sudo systemctl enable pigpiod`
+
+`sudo apt install python-pygame`
 
 
 ## Firewall config
 
-Open ssh for management
-Open web admin port 8080
+`sudo apt install ufw`
 
-`ufw disallow`
+`sudo ufw default deny incoming`
 
-`ufw enable ssh`
+`sudo ufw default allow outgoing`
 
-...
+`sudo ufw limit ssh comment "Allow SSH"`
+
+`sudo ufw allow 8080 comment "Allow administrator web portal"`
+
+`sudo ufw allow proto udp from 0.0.0.0/0 to 0.0.0.0/0 port 67 comment "Allow dhcp"`
+
+`sudo ufw enable`
 
 
 ## Database Config
@@ -65,16 +72,56 @@ Create database in `/static/` dir and insert admin
 
 ## Wifi Config
 
-The RPi will broadcast a WiFi AP for participants to connect to. We need WiFi at boot so the `wpa_supplicant.conf` should have:
+`sudo apt install dnsmasq`
+`sudo apt install hostapd`
+
+The RPi will broadcast a WiFi AP for participants to connect to:
+
+`sudo vim /etc/dhcpcd.conf`
 
 ```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-network={
-    ssid="📦"
-    psk="oops"
-    key_mgmt=WPA-PSK
-}
+interface wlan0
+    static ip_address=192.168.20.1/24
+    nohook wpa_supplicant
+
+denyinterfaces wlan0
 ```
+
+`sudo vim /etc/dnsmasq.conf`
+
+```
+interface=wlan0
+listen-address=192.168.20.1
+dhcp-range=192.168.20.3,192.168.20.254,255.255.255.0,24h
+```
+
+`sudo vim /etc/hostapd/hostapd.conf`
+
+```
+interface=wlan0
+driver=nl80211
+ssid=📦ฅ(＾・ω・＾ฅ)
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+wpa=2
+wpa_passphrase=somethingsupersecure
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+```
+
+`sudo vim /etc/default/hostapd`
+
+```
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+```
+
+`sudo systemctl unmask hostapd`
+
+`sudo systemctl enable hostapd`
 
 ## Challenges
 ### Challenge \#1
