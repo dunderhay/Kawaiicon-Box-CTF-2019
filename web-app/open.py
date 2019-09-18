@@ -35,6 +35,11 @@ def wow():
     pygame.mixer.music.load("static/wow.wav")
     pygame.mixer.music.play()
 
+def openmusic():
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load("static/open.wav")
+    pygame.mixer.music.play()
+
 def triggerLights():
     pi.write(redPin, 1)
     time.sleep(6)
@@ -123,7 +128,9 @@ def action(changePin):
             time.sleep(4)
             bgmusic()
         elif changePin == 3:
+            openmusic()
             triggerDoor()
+            bgmusic()
         return render_template('home.html')
 
 
