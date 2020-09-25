@@ -1,5 +1,9 @@
 # Box challenge for Kawaiicon 2019
 
+<p align="center">
+  <img width="70%" src="box-challenge.jpg" />
+</p>
+
 # Goal
 The overall goal is to encourage interaction with people at the conference and for the participants to hopefully pick up a new skill, learn something new, or meet a new person.
 
